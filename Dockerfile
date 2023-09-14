@@ -14,6 +14,5 @@ RUN pip install -r requirements.txt
 COPY . /currencyConverter/
 
 RUN python manage.py migrate
-RUN python manage.py loaddata fixtures.json
 
 CMD python manage.py test
