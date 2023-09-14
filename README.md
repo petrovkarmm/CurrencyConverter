@@ -39,3 +39,15 @@ http://localhost:8080/api/rates/?from=RUB&to=USD&value=100
   - {
 	"error": "Error. You cant convert current currency on same currency"
     }
+
+> Прописаны тесты + готовые запросы по Insomnia (localhost only)
+
+## Запуск:
+
+```
+git clone
+> https://github.com/petrovkarmm/CurrencyConverter.git
+docker-compose up --build
+```
+Приложение доступно по адресу: http://localhost:8080/
+
