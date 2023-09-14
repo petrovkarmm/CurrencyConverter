@@ -56,7 +56,7 @@ class GetCurrencyRateWrongParamsTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('error', response.json())
 
-    def test_get_currency_rate_wrong_params_ro(self):
+    def test_get_currency_rate_wrong_params_to(self):
         response = self.client.get('/api/rates/',
                                    {'from': 'USD', 'to': 'fail', 'value': 10})
 
