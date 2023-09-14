@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
-from .models import CurrencyRate
+from APILayer.fixer_api import currency_convert
 
 
 @require_GET
@@ -8,20 +8,20 @@ def get_currency_rate(request):
     """
     Обработчик GET запроса. Получение в запросе валют и значения.
     :param request:
-    :return: JsonResponse result with convert rate or 404 if error
+    :return: JsonResponse result with convert rate or error
     """
-    from_currency = request.GET.get('from')
+    current_currency = request.GET.get('from')
     to_currency = request.GET.get('to')
-    value = float(request.GET.get('value', 1))
+    amount = request.GET.get('value', 1)
 
-    if from_currency == to_currency:
-        # При конвертировании одинаковых валют был exception, лучше провести проверку.
-        return JsonResponse({'result': value})
+    if current_currency == to_currency:
+        # При конвертировании одинаковых валют возврат предупреждения.
+        return JsonResponse({'error': 'Error. You cant convert current currency on same currency'})
 
-    try:
-        rate = CurrencyRate.objects.get(from_currency=from_currency, to_currency=to_currency).rate
-        # Получение онли rate. Дальше просто математика и возврат.
-        result = value * rate
-        return JsonResponse({'result': result})
-    except CurrencyRate.DoesNotExist:
-        return JsonResponse({'error': 'Currency rate not found'}, status=404)
+    # Вызов функции APILayer.fixer_apy currency_convert
+    value = currency_convert(current_currency=current_currency, to_currency=to_currency, amount=amount)
+
+    if not value:
+        return JsonResponse({'error': 'Wrong param in GET request'})
+
+    return JsonResponse({'result': value})
