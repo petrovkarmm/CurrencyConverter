@@ -120,7 +120,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+currencyConverter/.env
 .venv
 env/
 venv/
